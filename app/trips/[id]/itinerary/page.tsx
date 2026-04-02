@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import EventCard from "@/components/EventCard";
 import EventForm, { EventFormData } from "@/components/EventForm";
 import ImportModal from "@/components/ImportModal";
+import YouTubeImportModal from "@/components/YouTubeImportModal";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 
@@ -49,6 +50,7 @@ export default function ItineraryPage() {
   const [editEvent, setEditEvent] = useState<Event | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
+  const [showYouTube, setShowYouTube] = useState(false);
 
   const fetchEvents = useCallback(async () => {
     const res = await fetch(`/api/events?tripId=${tripId}`);
@@ -104,6 +106,9 @@ export default function ItineraryPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-heading text-2xl font-bold">Itinerary</h1>
         <div className="flex gap-2">
+          <Button size="sm" variant="secondary" onClick={() => setShowYouTube(true)}>
+            YouTube
+          </Button>
           <Button size="sm" variant="secondary" onClick={() => setShowImport(true)}>
             Import
           </Button>
@@ -168,6 +173,14 @@ export default function ItineraryPage() {
           />
         )}
       </Modal>
+
+      {/* YouTube Import Modal */}
+      <YouTubeImportModal
+        open={showYouTube}
+        onClose={() => setShowYouTube(false)}
+        tripId={tripId}
+        onImported={fetchEvents}
+      />
 
       {/* Import Modal */}
       <ImportModal
