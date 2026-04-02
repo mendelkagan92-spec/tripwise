@@ -40,13 +40,6 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Verify webhook secret via query param or header
-    const secret = req.nextUrl.searchParams.get("secret") || req.headers.get("x-postmark-secret") || "";
-    const expectedSecret = process.env.POSTMARK_INBOUND_WEBHOOK_SECRET;
-    if (expectedSecret && secret !== expectedSecret) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const body = await req.json();
 
     // Postmark inbound webhook payload fields
